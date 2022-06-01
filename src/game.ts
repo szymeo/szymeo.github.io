@@ -90,6 +90,8 @@ export class Game implements ComponentData {
             [Keys.A]: () => this.input[Keys.A] = true,
             [Keys.S]: () => this.input[Keys.S] = true,
             [Keys.D]: () => this.input[Keys.D] = true,
+            default: () => {
+            },
         })(e.key)());
 
         document.addEventListener('keyup', e => switchCase({
@@ -97,6 +99,8 @@ export class Game implements ComponentData {
             [Keys.A]: () => this.input[Keys.A] = false,
             [Keys.S]: () => this.input[Keys.S] = false,
             [Keys.D]: () => this.input[Keys.D] = false,
+            default: () => {
+            },
         })(e.key)());
     }
 

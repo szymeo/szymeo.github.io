@@ -2,31 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="15d93d7f-d9a0-4a40-af5b-50b22e912b42" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/blueprints/blu_index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/com_dimensions.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/com_draw.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/com_index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/com_movement.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/com_transform.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/game.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/systems/sys_draw.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/systems/sys_maze.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/systems/sys_movement.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/types.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/utils.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/widgets/wid_player.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/world.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.test.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/logo.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/react-app-env.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/reportWebVitals.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/setupTests.ts" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/com_movement.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/com_movement.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/game.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/systems/sys_movement.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/systems/sys_movement.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -84,7 +64,7 @@
       <workItem from="1654081049729" duration="14000" />
       <workItem from="1654081079205" duration="31000" />
       <workItem from="1654081175789" duration="59000" />
-      <workItem from="1654081370656" duration="13465000" />
+      <workItem from="1654081370656" duration="14961000" />
     </task>
     <servers />
   </component>

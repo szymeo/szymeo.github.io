@@ -1,4 +1,5 @@
 import { Get, Has } from '../components/com_index';
+import { DEFAULT_VELOCITY } from '../components/com_movement';
 import { Entity, Game } from '../game';
 import { Keys } from '../types';
 
@@ -14,24 +15,38 @@ export function sys_movement(game: Game, delta: number) {
 
 function update(game: Game, entity: Entity): void {
     const movement = game[Get.Movement][entity];
+
+    movement.velocity = calc_velocity(game, movement.velocity);
+
     const wKeyPressed = game.input[Keys.W];
     const aKeyPressed = game.input[Keys.A];
     const sKeyPressed = game.input[Keys.S];
     const dKeyPressed = game.input[Keys.D];
 
     if (wKeyPressed) {
-        movement.y -= 1;
+        movement.y -= movement.velocity;
     }
-
     if (aKeyPressed) {
-        movement.x -= 1;
+        movement.x -= movement.velocity;
     }
-
     if (sKeyPressed) {
-        movement.y += 1;
+        movement.y += movement.velocity;
+    }
+    if (dKeyPressed) {
+        movement.x += movement.velocity;
+    }
+}
+
+function calc_velocity(game: Game, baseVelocity: number): number {
+    const velocityMultiplier = 0.02;
+
+    if (baseVelocity < DEFAULT_VELOCITY) {
+        return DEFAULT_VELOCITY;
     }
 
-    if (dKeyPressed) {
-        movement.x += 1;
+    if (!game.input[Keys.W] && !game.input[Keys.A] && !game.input[Keys.S] && !game.input[Keys.D]) {
+        return DEFAULT_VELOCITY;
     }
+
+    return baseVelocity + velocityMultiplier;
 }
