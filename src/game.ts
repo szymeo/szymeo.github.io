@@ -29,24 +29,30 @@ export class Game implements ComponentData {
     public [Get.Dimensions]: Dimensions[] = [];
     public [Get.Movement]: Movement[] = [];
 
-    public context!: CanvasRenderingContext2D;
+    public game2DContext!: CanvasRenderingContext2D;
+    public background2DContext!: CanvasRenderingContext2D;
     public input: GameInput = {
         [Keys.W]: false,
         [Keys.A]: false,
         [Keys.S]: false,
         [Keys.D]: false,
     };
+    public firstTick = true;
     private RAF: ReturnType<typeof requestAnimationFrame> = 0;
 
     constructor(
-        private readonly canvas: HTMLCanvasElement,
+        private readonly gameCanvas: HTMLCanvasElement,
+        private readonly backgroundCanvas: HTMLCanvasElement,
         public readonly width: number,
         public readonly height: number,
     ) {
-        this.canvas.width = width;
-        this.canvas.height = height;
-        this.context = canvas.getContext('2d')!;
-        this.context.imageSmoothingEnabled = true;
+        this.gameCanvas.width = width;
+        this.gameCanvas.height = height;
+        this.backgroundCanvas.width = width;
+        this.backgroundCanvas.height = height;
+        this.game2DContext = gameCanvas.getContext('2d')!;
+        this.background2DContext = backgroundCanvas.getContext('2d')!;
+        this.game2DContext.imageSmoothingEnabled = true;
         this.captureMovement();
     }
 
@@ -66,6 +72,13 @@ export class Game implements ComponentData {
             mixin(this, entity);
         }
         return entity;
+    }
+
+    resizeCanvas(width: number, height: number): void {
+        this.gameCanvas.width = width;
+        this.gameCanvas.height = height;
+        this.backgroundCanvas.width = width;
+        this.backgroundCanvas.height = height;
     }
 
     private update(delta: number): void {
@@ -107,6 +120,9 @@ export class Game implements ComponentData {
     private startTick(): void {
         let last = performance.now();
         const tick = (now: number) => {
+            if (this.firstTick) {
+                this.firstTick = false;
+            }
             let delta = (now - last) / 1000;
             this.update(delta);
             last = now;
@@ -118,7 +134,7 @@ export class Game implements ComponentData {
     }
 
     private stopTick(): void {
-        console.clear();
+        // console.clear();
         cancelAnimationFrame(this.RAF);
     }
 }
