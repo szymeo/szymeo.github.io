@@ -1,117 +1,203 @@
+import { com_collision } from './components/com_collision';
 import { com_dimensions } from './components/com_dimensions';
 import { com_draw } from './components/com_draw';
 import { com_movement } from './components/com_movement';
+import {
+    CELL_DRAW_DELAY,
+    MAZE_CELL_COLOR,
+    MAZE_CELL_SIZE,
+    MAZE_CELLS_HORIZONTAL,
+    MAZE_CELLS_VERTICAL,
+    MAZE_WALL_COLOR,
+    MAZE_WALL_WIDTH,
+    OUTER_WALL_WIDTH,
+} from './constants';
 import { Game } from './game';
+import { switchCase } from './utils';
 import { wid_player } from './widgets/wid_player';
+
+export const walls: number[][][] = [];
 
 export function world(game: Game): void {
     game.addEntity({
         coords: {
-            x: game.width / 2,
-            y: game.height / 2,
+            x: 5,
+            y: 5,
         },
         components: [
             com_draw(wid_player),
             com_dimensions(10, 10),
             com_movement(),
+            com_collision(),
         ],
     });
 
     draw_maze(game);
 }
 
+type xCoord = number;
+type yCoord = number;
+
+type DirectionCoords = [xCoord, yCoord];
+
+enum Direction {
+    TOP,
+    RIGHT,
+    BOTTOM,
+    LEFT,
+}
+
 function draw_maze(game: Game): void {
-    let pathWidth = 28;       //Width of the Maze Path
-    let wall = 2;             //Width of the Walls between Paths
-    let outerWall = 2;        //Width of the Outer most wall
-    let width = 26;           //Number paths fitted horisontally
-    let height = 26;          //Number paths fitted vertically
-    let delay = 0;            //Delay between algorithm cycles
-    let x = width / 2 | 0;        //Horisontal starting position
-    let y = height / 2 | 0;       //Vertical starting position
-    let seed = Math.random() * 100000 | 0;//Seed for random numbers
-    let wallColor = '#4a148c';   //Color of the walls
-    let pathColor = '#ebebeb';//Color of the path
+    let CURRENT_X = 0;// width / 2 | 0;
+    let CURRENT_Y = 0;//height / 2 | 0;
+    let seed = Math.random() * 100000 | 0;
     let random: () => number;
     let route: number[][];
     let ctx: CanvasRenderingContext2D;
-    let map: unknown[][] = [];
+    let unvisitedCellsMap: { [key: string]: boolean } = {};
     let offset: number;
     let timer: ReturnType<typeof setTimeout>;
 
-    let randomGen = function (seed: number) {
-        if (seed === undefined) seed = performance.now();
+    const randomGen = function (seed: number = performance.now()) {
         return function () {
             seed = (seed * 9301 + 49297) % 233280;
             return seed / 233280;
         };
     };
 
-    let init = function () {
-        offset = pathWidth / 2 + outerWall;
-        map = [];
+    const directionsCoordsMap = new Map<Direction, DirectionCoords>([
+        [Direction.TOP, [0, -1]],
+        [Direction.RIGHT, [1, 0]],
+        [Direction.BOTTOM, [0, 1]],
+        [Direction.LEFT, [-1, 0]],
+    ]);
 
+    const directionsMap = new Map<string, Direction>([
+        ['y-1', Direction.TOP],
+        ['x1', Direction.RIGHT],
+        ['y1', Direction.BOTTOM],
+        ['x-1', Direction.LEFT],
+    ]);
 
-        game.resizeCanvas(outerWall * 2 + width * (pathWidth + wall) - wall, outerWall * 2 + height * (pathWidth + wall) - wall);
+    function getDirectionFromCoords(coords: DirectionCoords): Direction {
+        const [x, y] = coords;
+        return (directionsMap.get(`x${x}`) || directionsMap.get(`y${y}`))!;
+    }
+
+    (function init() {
+        offset = MAZE_CELL_SIZE / 2 + OUTER_WALL_WIDTH;
+        unvisitedCellsMap = {};
+
+        game.resizeCanvas(OUTER_WALL_WIDTH * 2 + MAZE_CELLS_HORIZONTAL * (MAZE_CELL_SIZE + MAZE_WALL_WIDTH) - MAZE_WALL_WIDTH, OUTER_WALL_WIDTH * 2 + MAZE_CELLS_VERTICAL * (MAZE_CELL_SIZE + MAZE_WALL_WIDTH) - MAZE_WALL_WIDTH);
         ctx = game.background2DContext;
-        ctx.fillStyle = wallColor;
+        ctx.fillStyle = MAZE_WALL_COLOR;
         ctx.fillRect(0, 0, game.width, game.height);
 
         random = randomGen(seed);
 
-        ctx.strokeStyle = pathColor;
+        ctx.strokeStyle = MAZE_CELL_COLOR;
         ctx.lineCap = 'square';
-        ctx.lineWidth = pathWidth;
+        ctx.lineWidth = MAZE_CELL_SIZE;
         ctx.beginPath();
 
-        for (let i = 0; i < height * 2; i++) {
-            map[i] = [];
-
-            for (let j = 0; j < width * 2; j++) {
-                map[i][j] = false;
+        for (let i = 0; i < MAZE_CELLS_VERTICAL; i++) {
+            walls[i] = [];
+            for (let j = 0; j < MAZE_CELLS_HORIZONTAL; j++) {
+                unvisitedCellsMap[getMazeCellId(i, j)] = true;
+                walls[i][j] = [];
             }
         }
 
-        map[y * 2][x * 2] = true;
-        route = [[x, y]];
-        ctx.moveTo(x * (pathWidth + wall) + offset,
-            y * (pathWidth + wall) + offset);
-    };
-    init();
+        unvisitedCellsMap[getMazeCellId(CURRENT_X, CURRENT_Y)] = false;
+        walls[0][0] = [1, 1, 1, 1];
+        route = [[CURRENT_X, CURRENT_Y]];
+        ctx.moveTo(
+            CURRENT_X * (MAZE_CELL_SIZE + MAZE_WALL_WIDTH) + offset,
+            CURRENT_Y * (MAZE_CELL_SIZE + MAZE_WALL_WIDTH) + offset,
+        );
+    })();
+
+    function getMazeCellId(x: number, y: number): string {
+        return `${x}.${y}`;
+    }
+
+    function saveWallsForCurrentMazeCell(directionCoords: DirectionCoords) {
+        const [x, y] = directionCoords;
+        const nextMoveDirection = getDirectionFromCoords(directionCoords);
+
+        walls[CURRENT_Y + y][CURRENT_X + x] = {
+            [Direction.TOP]: [1, 1, 0, 1],
+            [Direction.RIGHT]: [1, 1, 1, 0],
+            [Direction.BOTTOM]: [0, 1, 1, 1],
+            [Direction.LEFT]: [1, 0, 1, 1],
+        }[nextMoveDirection];
+    }
+
+    function removeWallsForPreviousMazeCell(nextMoveDirection: Direction) {
+        switchCase({
+            [Direction.TOP]: () => {
+                const [t, r, b, l] = walls[CURRENT_Y][CURRENT_X];
+                walls[CURRENT_Y][CURRENT_X] = [0, r, b, l];
+            },
+            [Direction.RIGHT]: () => {
+                const [t, r, b, l] = walls[CURRENT_Y][CURRENT_X];
+                walls[CURRENT_Y][CURRENT_X] = [t, 0, b, l];
+            },
+            [Direction.BOTTOM]: () => {
+                const [t, r, b, l] = walls[CURRENT_Y][CURRENT_X];
+                walls[CURRENT_Y][CURRENT_X] = [t, r, 0, l];
+            },
+            [Direction.LEFT]: () => {
+                const [t, r, b, l] = walls[CURRENT_Y][CURRENT_X];
+                walls[CURRENT_Y][CURRENT_X] = [t, r, b, 0];
+            },
+        })(nextMoveDirection)();
+    }
 
     let loop = function () {
-        let direction;
-        x = route[route.length - 1][0] | 0;
-        y = route[route.length - 1][1] | 0;
+        CURRENT_X = route[route.length - 1][0] | 0;
+        CURRENT_Y = route[route.length - 1][1] | 0;
 
-        const directions = [[1, 0], [-1, 0], [0, 1], [0, -1]];
-        const alternatives = [];
+        const possibleDirections: DirectionCoords[] = Array.from(directionsCoordsMap.values());
+        const alternativeDirectionsForNextMove = [];
 
-        for (let i = 0; i < directions.length; i++) {
-            if (map[(directions[i][1] + y) * 2] !== undefined &&
-                map[(directions[i][1] + y) * 2][(directions[i][0] + x) * 2] === false) {
-                alternatives.push(directions[i]);
+        for (let i = 0; i < possibleDirections.length; i++) {
+            if (unvisitedCellsMap[getMazeCellId(possibleDirections[i][0] + CURRENT_X, possibleDirections[i][1] + CURRENT_Y)]) {
+                alternativeDirectionsForNextMove.push(possibleDirections[i]);
             }
         }
 
-        if (alternatives.length === 0) {
+        if (!alternativeDirectionsForNextMove.length) {
             route.pop();
             if (route.length > 0) {
-                ctx.moveTo(route[route.length - 1][0] * (pathWidth + wall) + offset,
-                    route[route.length - 1][1] * (pathWidth + wall) + offset);
-                timer = setTimeout(loop, delay);
+                ctx.moveTo(
+                    route[route.length - 1][0] * (MAZE_CELL_SIZE + MAZE_WALL_WIDTH) + offset,
+                    route[route.length - 1][1] * (MAZE_CELL_SIZE + MAZE_WALL_WIDTH) + offset,
+                );
+                timer = setTimeout(loop, CELL_DRAW_DELAY);
             }
+
+            // console.log(walls);
             return;
         }
-        direction = alternatives[random() * alternatives.length | 0];
-        route.push([direction[0] + x, direction[1] + y]);
-        ctx.lineTo((direction[0] + x) * (pathWidth + wall) + offset,
-            (direction[1] + y) * (pathWidth + wall) + offset);
-        map[(direction[1] + y) * 2][(direction[0] + x) * 2] = true;
-        map[direction[1] + y * 2][direction[0] + x * 2] = true;
+
+        const selectedAlternativeDirectionIndex: number = random() * alternativeDirectionsForNextMove.length | 0;
+        const directionCoords: DirectionCoords = alternativeDirectionsForNextMove[selectedAlternativeDirectionIndex];
+
+        saveWallsForCurrentMazeCell(directionCoords);
+        removeWallsForPreviousMazeCell(getDirectionFromCoords(directionCoords));
+
+        route.push([directionCoords[0] + CURRENT_X, directionCoords[1] + CURRENT_Y]);
+
+        ctx.lineTo(
+            (directionCoords[0] + CURRENT_X) * (MAZE_CELL_SIZE + MAZE_WALL_WIDTH) + offset,
+            (directionCoords[1] + CURRENT_Y) * (MAZE_CELL_SIZE + MAZE_WALL_WIDTH) + offset,
+        );
+
+        unvisitedCellsMap[getMazeCellId(directionCoords[0] + CURRENT_X, directionCoords[1] + CURRENT_Y)] = false;
         ctx.stroke();
-        // console.log(map);
-        timer = setTimeout(loop, delay);
+
+        timer = setTimeout(loop, CELL_DRAW_DELAY);
     };
     loop();
 }

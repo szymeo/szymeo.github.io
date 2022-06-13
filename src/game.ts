@@ -1,9 +1,11 @@
 import { Blueprint } from './blueprints/blu_index';
+import { Collision } from './components/com_collision';
 import { Dimensions } from './components/com_dimensions';
 import { Draw } from './components/com_draw';
 import { ComponentData, Get } from './components/com_index';
 import { Movement } from './components/com_movement';
 import { com_transform, Transform } from './components/com_transform';
+import { sys_collision } from './systems/sys_collision';
 import { sys_draw } from './systems/sys_draw';
 import { sys_movement } from './systems/sys_movement';
 import { Keys } from './types';
@@ -28,6 +30,7 @@ export class Game implements ComponentData {
     public [Get.Draw]: Draw[] = [];
     public [Get.Dimensions]: Dimensions[] = [];
     public [Get.Movement]: Movement[] = [];
+    public [Get.Collision]: Collision[] = [];
 
     public game2DContext!: CanvasRenderingContext2D;
     public background2DContext!: CanvasRenderingContext2D;
@@ -84,6 +87,7 @@ export class Game implements ComponentData {
     private update(delta: number): void {
         sys_movement(this, delta);
         sys_draw(this, delta);
+        sys_collision(this, delta);
         // console.log(this.canvas, delta);
     }
 

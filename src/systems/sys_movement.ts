@@ -14,26 +14,28 @@ export function sys_movement(game: Game, delta: number) {
 }
 
 function update(game: Game, entity: Entity): void {
+    const transform = game[Get.Transform][entity];
     const movement = game[Get.Movement][entity];
+    const collision = game[Get.Collision][entity];
 
-    movement.velocity = calc_velocity(game, movement.velocity);
+    movement.velocity = 1; //calc_velocity(game, movement.velocity);
 
     const wKeyPressed = game.input[Keys.W];
     const aKeyPressed = game.input[Keys.A];
     const sKeyPressed = game.input[Keys.S];
     const dKeyPressed = game.input[Keys.D];
 
-    if (wKeyPressed) {
-        movement.y -= movement.velocity;
+    if (wKeyPressed && !collision.top) {
+        transform.y -= movement.velocity;
     }
-    if (aKeyPressed) {
-        movement.x -= movement.velocity;
+    if (aKeyPressed && !collision.left) {
+        transform.x -= movement.velocity;
     }
-    if (sKeyPressed) {
-        movement.y += movement.velocity;
+    if (sKeyPressed && !collision.bottom) {
+        transform.y += movement.velocity;
     }
-    if (dKeyPressed) {
-        movement.x += movement.velocity;
+    if (dKeyPressed && !collision.right) {
+        transform.x += movement.velocity;
     }
 }
 
