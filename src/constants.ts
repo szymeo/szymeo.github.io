@@ -7,3 +7,4 @@ export const MAZE_CELLS_VERTICAL = 15;
 export const CELL_DRAW_DELAY = 1;
 export const MAZE_WALL_COLOR = '#4a148c';
 export const MAZE_CELL_COLOR = '#ebebeb';
+export const PROJECTS_COUNT = 3;

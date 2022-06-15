@@ -1,1 +1,0 @@
-export const switchCase = (cases: Record<string | number, (...argv: unknown[]) => void>) => (key: string | number) => cases[key] || cases.default;

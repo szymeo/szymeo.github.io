@@ -8,8 +8,8 @@ import { com_transform, Transform } from './components/com_transform';
 import { sys_collision } from './systems/sys_collision';
 import { sys_draw } from './systems/sys_draw';
 import { sys_movement } from './systems/sys_movement';
-import { Keys } from './types';
-import { switchCase } from './utils';
+import { Keys } from './typings';
+import { switch_case } from './utils/switch_case';
 import { world } from './world';
 
 export type Entity = number;
@@ -25,6 +25,7 @@ const MAX_ENTITIES = 1000;
 
 export class Game implements ComponentData {
     public entities: number[] = [];
+    public walls: number[][][] = [];
 
     public [Get.Transform]: Transform[] = [];
     public [Get.Draw]: Draw[] = [];
@@ -102,7 +103,7 @@ export class Game implements ComponentData {
     }
 
     private captureMovement(): void {
-        document.addEventListener('keydown', e => switchCase({
+        document.addEventListener('keydown', e => switch_case({
             [Keys.W]: () => this.input[Keys.W] = true,
             [Keys.A]: () => this.input[Keys.A] = true,
             [Keys.S]: () => this.input[Keys.S] = true,
@@ -111,7 +112,7 @@ export class Game implements ComponentData {
             },
         })(e.key)());
 
-        document.addEventListener('keyup', e => switchCase({
+        document.addEventListener('keyup', e => switch_case({
             [Keys.W]: () => this.input[Keys.W] = false,
             [Keys.A]: () => this.input[Keys.A] = false,
             [Keys.S]: () => this.input[Keys.S] = false,

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 // @ts-ignore
-import bgImg from './baner_czaszeczka.png';
+import bgImg from './assets/baner_czaszeczka.png';
 import { Game } from './game';
 
 function App() {
@@ -34,8 +34,10 @@ function App() {
             alignItems: 'center',
             justifyContent: 'center',
         }}>
-            <canvas style={{ position: 'absolute', zIndex: 2 }} ref={canvasGame}></canvas>
-            <canvas style={{ position: 'absolute', zIndex: 1 }} ref={canvasBackground}></canvas>
+            <canvas style={{ position: 'absolute', zIndex: 2, boxShadow: 'rgb(255 255 255 / 30%) 0px 8px 20px 0px' }}
+                    ref={canvasGame}></canvas>
+            <canvas style={{ position: 'absolute', zIndex: 1, boxShadow: 'rgb(255 255 255 / 54%) 0px 8px 20px 0px' }}
+                    ref={canvasBackground}></canvas>
         </div>
     );
 }

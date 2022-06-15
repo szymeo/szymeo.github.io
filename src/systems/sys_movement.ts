@@ -1,7 +1,7 @@
 import { Get, Has } from '../components/com_index';
 import { DEFAULT_VELOCITY } from '../components/com_movement';
 import { Entity, Game } from '../game';
-import { Keys } from '../types';
+import { Keys } from '../typings';
 
 const QUERY = Has.Movement;
 

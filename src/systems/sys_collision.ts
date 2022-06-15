@@ -1,7 +1,6 @@
 import { Get, Has } from '../components/com_index';
 import { MAZE_CELL_SIZE, MAZE_WALL_WIDTH } from '../constants';
 import { Entity, Game } from '../game';
-import { walls } from '../world';
 
 const QUERY = Has.Movement | Has.Dimensions;
 
@@ -22,7 +21,7 @@ function update(game: Game, entity: Entity): void {
         Math.ceil((transform.x + dimensions.width / 2) / (MAZE_CELL_SIZE + MAZE_WALL_WIDTH)) - 1,
         Math.ceil((transform.y + dimensions.height / 2) / (MAZE_CELL_SIZE + MAZE_WALL_WIDTH)) - 1,
     ];
-    const [topWall, rightWall, bottomWall, leftWall] = walls[yIdx][xIdx];
+    const [topWall, rightWall, bottomWall, leftWall] = game.walls[yIdx][xIdx];
     const cellXY = {
         x: xIdx * MAZE_CELL_SIZE + (MAZE_WALL_WIDTH * xIdx),
         y: yIdx * MAZE_CELL_SIZE + (MAZE_WALL_WIDTH * yIdx),
