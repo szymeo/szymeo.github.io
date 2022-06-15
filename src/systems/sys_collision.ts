@@ -22,12 +22,14 @@ function update(game: Game, entity: Entity): void {
         Math.ceil((transform.x + dimensions.width / 2) / (MAZE_CELL_SIZE + MAZE_WALL_WIDTH)) - 1,
         Math.ceil((transform.y + dimensions.height / 2) / (MAZE_CELL_SIZE + MAZE_WALL_WIDTH)) - 1,
     ];
-    console.log(transform.y, yIdx);
     const [topWall, rightWall, bottomWall, leftWall] = walls[yIdx][xIdx];
-    const cellXY = { x: xIdx * MAZE_CELL_SIZE, y: yIdx * MAZE_CELL_SIZE };
+    const cellXY = {
+        x: xIdx * MAZE_CELL_SIZE + (MAZE_WALL_WIDTH * xIdx),
+        y: yIdx * MAZE_CELL_SIZE + (MAZE_WALL_WIDTH * yIdx),
+    };
 
-    collision.top = (topWall !== 0) && transform.y - dimensions.height < cellXY.y + MAZE_WALL_WIDTH;
+    collision.top = (topWall !== 0) && transform.y < cellXY.y;
     collision.right = (rightWall !== 0) && transform.x + dimensions.width > cellXY.x + MAZE_CELL_SIZE - MAZE_WALL_WIDTH;
     collision.bottom = (bottomWall !== 0) && transform.y + dimensions.height > cellXY.y + MAZE_CELL_SIZE - MAZE_WALL_WIDTH;
-    collision.left = (leftWall !== 0) && transform.x - dimensions.width < cellXY.x + MAZE_WALL_WIDTH;
+    collision.left = (leftWall !== 0) && transform.x < cellXY.x;
 }
