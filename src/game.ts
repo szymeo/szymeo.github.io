@@ -1,14 +1,17 @@
 import { Blueprint } from './blueprints/blu_index';
 import { Collision } from './components/com_collision';
+import { CollisionEffect } from './components/com_collision_effect';
 import { Dimensions } from './components/com_dimensions';
 import { Draw } from './components/com_draw';
 import { ComponentData, Get } from './components/com_index';
 import { Movement } from './components/com_movement';
 import { com_transform, Transform } from './components/com_transform';
-import { sys_collision } from './systems/sys_collision';
+import { sys_collision_effect } from './systems/sys_collision_effect';
 import { sys_draw } from './systems/sys_draw';
 import { sys_movement } from './systems/sys_movement';
-import { Keys } from './typings';
+import { sys_wall_collision } from './systems/sys_wall_collision';
+import { sys_waypoint_collision } from './systems/sys_waypoint_collision';
+import { Keys, xCoord, yCoord } from './typings';
 import { switch_case } from './utils/switch_case';
 import { world } from './world';
 
@@ -26,12 +29,14 @@ const MAX_ENTITIES = 1000;
 export class Game implements ComponentData {
     public entities: number[] = [];
     public walls: number[][][] = [];
+    public waypointCoords: [xCoord, yCoord][] = [];
 
     public [Get.Transform]: Transform[] = [];
     public [Get.Draw]: Draw[] = [];
     public [Get.Dimensions]: Dimensions[] = [];
     public [Get.Movement]: Movement[] = [];
     public [Get.Collision]: Collision[] = [];
+    public [Get.CollisionEffect]: CollisionEffect[] = [];
 
     public game2DContext!: CanvasRenderingContext2D;
     public background2DContext!: CanvasRenderingContext2D;
@@ -47,17 +52,19 @@ export class Game implements ComponentData {
     constructor(
         private readonly gameCanvas: HTMLCanvasElement,
         private readonly backgroundCanvas: HTMLCanvasElement,
-        public readonly width: number,
-        public readonly height: number,
     ) {
-        this.gameCanvas.width = width;
-        this.gameCanvas.height = height;
-        this.backgroundCanvas.width = width;
-        this.backgroundCanvas.height = height;
         this.game2DContext = gameCanvas.getContext('2d')!;
         this.background2DContext = backgroundCanvas.getContext('2d')!;
         this.game2DContext.imageSmoothingEnabled = true;
         this.captureMovement();
+    }
+
+    get width(): number {
+        return this.gameCanvas.width;
+    }
+
+    get height(): number {
+        return this.gameCanvas.height;
     }
 
     start(): void {
@@ -88,8 +95,9 @@ export class Game implements ComponentData {
     private update(delta: number): void {
         sys_movement(this, delta);
         sys_draw(this, delta);
-        sys_collision(this, delta);
-        // console.log(this.canvas, delta);
+        sys_wall_collision(this, delta);
+        sys_waypoint_collision(this, delta);
+        sys_collision_effect(this, delta);
     }
 
     private createEntity(mask = 0) {

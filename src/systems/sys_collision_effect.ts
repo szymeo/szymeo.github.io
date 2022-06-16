@@ -1,11 +1,9 @@
 import { Get, Has } from '../components/com_index';
 import { Entity, Game } from '../game';
 
-const QUERY = Has.Transform | Has.Draw;
+const QUERY = Has.Transform | Has.CollisionEffect;
 
-export function sys_draw(game: Game, delta: number) {
-    game.game2DContext.clearRect(0, 0, game.width, game.height);
-
+export function sys_collision_effect(game: Game, delta: number) {
     for (let i = 0; i < game.entities.length; i++) {
         if ((game.entities[i] & QUERY) === QUERY) {
             update(game, i);
@@ -14,7 +12,9 @@ export function sys_draw(game: Game, delta: number) {
 }
 
 function update(game: Game, entity: Entity): void {
-    game[Get.Draw][entity].widget(
+    const collisionEffect = game[Get.CollisionEffect][entity];
+
+    collisionEffect.active && collisionEffect.widget(
         game,
         entity,
     );

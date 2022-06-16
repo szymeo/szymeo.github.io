@@ -1,10 +1,12 @@
 import { Get, Has } from '../components/com_index';
 import { MAZE_CELL_SIZE, MAZE_WALL_WIDTH } from '../constants';
 import { Entity, Game } from '../game';
+import { get_cell_coords } from '../utils/get_cell_coords';
+import { get_cell_xy } from '../utils/get_cell_xy';
 
-const QUERY = Has.Movement | Has.Dimensions;
+const QUERY = Has.Transform | Has.Dimensions | Has.Collision;
 
-export function sys_collision(game: Game, delta: number) {
+export function sys_wall_collision(game: Game, delta: number) {
     for (let i = 0; i < game.entities.length; i++) {
         if ((game.entities[i] & QUERY) === QUERY) {
             update(game, i);
@@ -17,15 +19,9 @@ function update(game: Game, entity: Entity): void {
     const dimensions = game[Get.Dimensions][entity];
     const collision = game[Get.Collision][entity];
 
-    const [xIdx, yIdx]: number[] = [
-        Math.ceil((transform.x + dimensions.width / 2) / (MAZE_CELL_SIZE + MAZE_WALL_WIDTH)) - 1,
-        Math.ceil((transform.y + dimensions.height / 2) / (MAZE_CELL_SIZE + MAZE_WALL_WIDTH)) - 1,
-    ];
-    const [topWall, rightWall, bottomWall, leftWall] = game.walls[yIdx][xIdx];
-    const cellXY = {
-        x: xIdx * MAZE_CELL_SIZE + (MAZE_WALL_WIDTH * xIdx),
-        y: yIdx * MAZE_CELL_SIZE + (MAZE_WALL_WIDTH * yIdx),
-    };
+    const { x_idx, y_idx } = get_cell_coords(transform, dimensions);
+    const [topWall, rightWall, bottomWall, leftWall] = game.walls[y_idx][x_idx];
+    const cellXY = get_cell_xy(x_idx, y_idx);
 
     collision.top = (topWall !== 0) && transform.y < cellXY.y;
     collision.right = (rightWall !== 0) && transform.x + dimensions.width > cellXY.x + MAZE_CELL_SIZE - MAZE_WALL_WIDTH;

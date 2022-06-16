@@ -11,8 +11,6 @@ function App() {
         const game = new Game(
             canvasGame.current as any,
             canvasBackground.current as any,
-            782,
-            782,
         );
 
         game.start();
