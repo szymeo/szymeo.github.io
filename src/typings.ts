@@ -14,5 +14,6 @@ export enum Keys {
     W = 'w',
     A = 'a',
     S = 's',
-    D = 'd'
+    D = 'd',
+    SHIFT = 'Shift'
 }

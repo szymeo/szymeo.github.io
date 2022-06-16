@@ -24,16 +24,37 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap" rel="stylesheet">
     <title>Szymeo's portfolio</title>
     <style>body, html {
         overflow: hidden;
         margin: 0;
         padding: 0;
-    }</style>
+    }
+
+    * {
+        font-family: 'Montserrat', sans-serif
+    }
+    </style>
 </head>
 <body>
 <noscript>You need to enable JavaScript to run this app.</noscript>
 <div id="root"></div>
+<span style="position: fixed;bottom:0;left:0;color:#fff">Thanks to <a href="https://www.instagram.com/siubidu/"
+                                                                      style="color:#18FFFF">@siubidu</a> my page has amazing background =)</span>
+<div style="position:fixed;top:10px;border-radius:2px;right:10px;color:#fff;border:3px solid #ffffff;padding:3px">
+    <div>
+        <label for="wallsCollision" style="cursor: pointer;">Wall collision</label>
+        <input checked id="wallsCollision" type="checkbox"/>
+    </div>
+
+    <div>
+        <label for="movementSpeed" style="cursor: pointer;">Movement speed</label>
+        <input checked id="movementSpeed" max="69" min="1" type="number" value="1"/>
+    </div>
+</div>
 <!--
   This HTML file is a template.
   If you open it directly in the browser, you will see an empty page.

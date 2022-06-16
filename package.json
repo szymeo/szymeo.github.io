@@ -4,11 +4,13 @@
   "private": true,
   "dependencies": {
     "@types/node": "^16.11.38",
+    "gh-pages": "^4.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "5.0.1",
     "typescript": "^4.7.2"
   },
+  "homepage": "https://szymeo.github.io/",
   "devDependencies": {
     "@types/react": "^17.0.33",
     "@types/react-dom": "^17.0.10"
@@ -17,7 +19,9 @@
     "dev": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "yarn build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [

@@ -20,8 +20,19 @@ function update(game: Game, entity: Entity): void {
     const collision = game[Get.Collision][entity];
 
     const { x_idx, y_idx } = get_cell_coords(transform, dimensions);
+    if (!game.walls[y_idx] || !game.walls[y_idx][x_idx]) {
+        return;
+    }
     const [topWall, rightWall, bottomWall, leftWall] = game.walls[y_idx][x_idx];
     const cellXY = get_cell_xy(x_idx, y_idx);
+
+    if (!game.wallsCollisionEnabled) {
+        collision.top = false;
+        collision.right = false;
+        collision.bottom = false;
+        collision.left = false;
+        return;
+    }
 
     collision.top = (topWall !== 0) && transform.y < cellXY.y;
     collision.right = (rightWall !== 0) && transform.x + dimensions.width > cellXY.x + MAZE_CELL_SIZE - MAZE_WALL_WIDTH;

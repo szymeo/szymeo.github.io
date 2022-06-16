@@ -1,5 +1,4 @@
 import { Get, Has } from '../components/com_index';
-import { DEFAULT_VELOCITY } from '../components/com_movement';
 import { Entity, Game } from '../game';
 import { Keys } from '../typings';
 
@@ -18,7 +17,7 @@ function update(game: Game, entity: Entity): void {
     const movement = game[Get.Movement][entity];
     const collision = game[Get.Collision][entity];
 
-    movement.velocity = 1; //calc_velocity(game, movement.velocity);
+    movement.velocity = game.movementSpeed;
 
     const wKeyPressed = game.input[Keys.W];
     const aKeyPressed = game.input[Keys.A];
@@ -37,18 +36,4 @@ function update(game: Game, entity: Entity): void {
     if (dKeyPressed && !collision.right) {
         transform.x += movement.velocity;
     }
-}
-
-function calc_velocity(game: Game, baseVelocity: number): number {
-    const velocityMultiplier = 0.02;
-
-    if (baseVelocity < DEFAULT_VELOCITY) {
-        return DEFAULT_VELOCITY;
-    }
-
-    if (!game.input[Keys.W] && !game.input[Keys.A] && !game.input[Keys.S] && !game.input[Keys.D]) {
-        return DEFAULT_VELOCITY;
-    }
-
-    return baseVelocity + velocityMultiplier;
 }

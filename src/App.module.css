@@ -1,0 +1,29 @@
+.gameWrapper {
+    position: relative;
+    height: 102vh;
+    width: 102vw;
+    margin-left: -1vw;
+    margin-top: -1vh;
+}
+
+.gameWrapper::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('https://github.com/szymeo/szymeo.github.io/blob/master/src/assets/baner_czaszeczka.png?raw=true');
+    background-size: cover;
+    background-repeat: no-repeat;
+    filter: blur(3px);
+}
+
+.game {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+}

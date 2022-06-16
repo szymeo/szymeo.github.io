@@ -48,6 +48,8 @@ export class Game implements ComponentData {
     };
     public firstTick = true;
     private RAF: ReturnType<typeof requestAnimationFrame> = 0;
+    private readonly wallsCollisionCheckbox = document.getElementById('wallsCollision');
+    private readonly movementSpeedInput = document.getElementById('movementSpeed');
 
     constructor(
         private readonly gameCanvas: HTMLCanvasElement,
@@ -65,6 +67,14 @@ export class Game implements ComponentData {
 
     get height(): number {
         return this.gameCanvas.height;
+    }
+
+    get wallsCollisionEnabled(): boolean {
+        return (this.wallsCollisionCheckbox! as HTMLInputElement).checked;
+    }
+
+    get movementSpeed(): number {
+        return Number((this.movementSpeedInput! as HTMLInputElement).value);
     }
 
     start(): void {
