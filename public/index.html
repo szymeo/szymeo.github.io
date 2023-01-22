@@ -37,6 +37,10 @@
     * {
         font-family: 'Montserrat', sans-serif
     }
+    #collisionNotification a {
+      color: #fff;
+    }
+
     </style>
 </head>
 <body>
@@ -55,6 +59,7 @@
         <input checked id="movementSpeed" max="69" min="1" type="number" value="1"/>
     </div>
 </div>
+<div style="position:fixed;z-index:1;right:10px;top:80px;font-size: 34px;" id="collisionNotification"></div>
 <!--
   This HTML file is a template.
   If you open it directly in the browser, you will see an empty page.

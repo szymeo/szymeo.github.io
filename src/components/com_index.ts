@@ -4,6 +4,7 @@ import { Dimensions } from './com_dimensions';
 import { Draw } from './com_draw';
 import { Movement } from './com_movement';
 import { Transform } from './com_transform';
+import { Notification } from './com_notification';
 
 export const enum Get {
     Transform,
@@ -12,6 +13,7 @@ export const enum Get {
     Movement,
     Collision,
     CollisionEffect,
+    Notification,
 }
 
 export interface ComponentData {
@@ -21,6 +23,7 @@ export interface ComponentData {
     [Get.Movement]: Array<Movement>;
     [Get.Collision]: Array<Collision>;
     [Get.CollisionEffect]: Array<CollisionEffect>;
+    [Get.Notification]: Array<Notification>;
 }
 
 export const enum Has {
@@ -30,4 +33,5 @@ export const enum Has {
     Movement = 1 << Get.Movement,
     Collision = 1 << Get.Collision,
     CollisionEffect = 1 << Get.CollisionEffect,
+    Notification = 1 << Get.Notification,
 }

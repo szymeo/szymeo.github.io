@@ -3,6 +3,7 @@ import { com_collision_effect } from './components/com_collision_effect';
 import { com_dimensions } from './components/com_dimensions';
 import { com_draw } from './components/com_draw';
 import { com_movement } from './components/com_movement';
+import { com_notification } from './components/com_notification';
 import {
     MAZE_CELL_SIZE,
     MAZE_CELLS_HORIZONTAL,
@@ -11,6 +12,7 @@ import {
     PLAYER_SIZE,
     PROJECTS_COUNT,
     WAYPOINT_SIZE,
+    SONGS
 } from './constants';
 import { Game } from './game';
 import { draw_maze } from './utils/draw_maze';
@@ -18,6 +20,7 @@ import { unique_random_array } from './utils/unique_random_array';
 import { wid_player } from './widgets/wid_player';
 import { wid_waypoint } from './widgets/wid_waypoint';
 import { wid_waypoint_colliding } from './widgets/wid_waypoint_colliding';
+import { wid_collision_notification } from './widgets/wid_collision_notification';
 
 export function world(game: Game): void {
     draw_maze(game);
@@ -44,6 +47,8 @@ function add_waypoints(game: Game): void {
                     com_draw(wid_waypoint),
                     com_dimensions(WAYPOINT_SIZE, WAYPOINT_SIZE),
                     com_collision(),
+                    com_collision_effect(wid_collision_notification),
+                    com_notification(SONGS[0]),
                 ],
             });
         });

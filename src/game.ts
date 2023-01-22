@@ -6,11 +6,13 @@ import { Draw } from './components/com_draw';
 import { ComponentData, Get } from './components/com_index';
 import { Movement } from './components/com_movement';
 import { com_transform, Transform } from './components/com_transform';
+import { Notification } from './components/com_notification';
 import { sys_collision_effect } from './systems/sys_collision_effect';
 import { sys_draw } from './systems/sys_draw';
 import { sys_movement } from './systems/sys_movement';
 import { sys_wall_collision } from './systems/sys_wall_collision';
 import { sys_waypoint_collision } from './systems/sys_waypoint_collision';
+import { sys_collision_notification} from './systems/sys_collision_notification';
 import { Keys, xCoord, yCoord } from './typings';
 import { switch_case } from './utils/switch_case';
 import { world } from './world';
@@ -37,6 +39,7 @@ export class Game implements ComponentData {
     public [Get.Movement]: Movement[] = [];
     public [Get.Collision]: Collision[] = [];
     public [Get.CollisionEffect]: CollisionEffect[] = [];
+    public [Get.Notification]: Notification[] = [];
 
     public game2DContext!: CanvasRenderingContext2D;
     public background2DContext!: CanvasRenderingContext2D;
@@ -47,12 +50,13 @@ export class Game implements ComponentData {
         [Keys.D]: false,
     };
     public firstTick = true;
+    public collisionNotificationContainer = document.getElementById('collisionNotification');
     private RAF: ReturnType<typeof requestAnimationFrame> = 0;
     private readonly wallsCollisionCheckbox = document.getElementById('wallsCollision');
     private readonly movementSpeedInput = document.getElementById('movementSpeed');
 
     constructor(
-        private readonly gameCanvas: HTMLCanvasElement,
+        private readonly gameCanvas: HTMLCanvasElement, 
         private readonly backgroundCanvas: HTMLCanvasElement,
     ) {
         this.game2DContext = gameCanvas.getContext('2d')!;
@@ -107,6 +111,7 @@ export class Game implements ComponentData {
         sys_draw(this, delta);
         sys_wall_collision(this, delta);
         sys_waypoint_collision(this, delta);
+        sys_collision_notification(this);
         sys_collision_effect(this, delta);
     }
 
@@ -122,22 +127,22 @@ export class Game implements ComponentData {
 
     private captureMovement(): void {
         document.addEventListener('keydown', e => switch_case({
-            [Keys.W]: () => this.input[Keys.W] = true,
-            [Keys.A]: () => this.input[Keys.A] = true,
-            [Keys.S]: () => this.input[Keys.S] = true,
-            [Keys.D]: () => this.input[Keys.D] = true,
-            default: () => {
-            },
-        })(e.key)());
+                [Keys.W]: () => this.input[Keys.W] = true,
+                [Keys.A]: () => this.input[Keys.A] = true,
+                [Keys.S]: () => this.input[Keys.S] = true,
+                [Keys.D]: () => this.input[Keys.D] = true,
+                default: () => {
+                },
+            })(e.key)());
 
         document.addEventListener('keyup', e => switch_case({
-            [Keys.W]: () => this.input[Keys.W] = false,
-            [Keys.A]: () => this.input[Keys.A] = false,
-            [Keys.S]: () => this.input[Keys.S] = false,
-            [Keys.D]: () => this.input[Keys.D] = false,
-            default: () => {
-            },
-        })(e.key)());
+                [Keys.W]: () => this.input[Keys.W] = false,
+                [Keys.A]: () => this.input[Keys.A] = false,
+                [Keys.S]: () => this.input[Keys.S] = false,
+                [Keys.D]: () => this.input[Keys.D] = false,
+                default: () => {
+                },
+            })(e.key)());
     }
 
     private startTick(): void {

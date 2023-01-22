@@ -9,3 +9,7 @@ export const CELL_DRAW_DELAY = 0;
 export const MAZE_WALL_COLOR = '#EEFF41';
 export const MAZE_CELL_COLOR = '#311B92';
 export const PROJECTS_COUNT = 3;
+
+export const SONGS = [
+    'https://soundcloud.com/respectproduct/kasta-proshel-cherez?si=8b3c876c951745eda228ff643473666c&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing',
+];

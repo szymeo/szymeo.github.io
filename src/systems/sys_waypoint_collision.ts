@@ -1,5 +1,4 @@
 import { Get, Has } from '../components/com_index';
-import { WAYPOINT_SIZE } from '../constants';
 import { Entity, Game } from '../game';
 
 const QUERY = Has.Dimensions | Has.Collision | Has.CollisionEffect;
@@ -17,17 +16,17 @@ function update(game: Game, entity: Entity): void {
     const dimensions = game[Get.Dimensions][entity];
     const collisionEffect = game[Get.CollisionEffect][entity];
 
-    collisionEffect.active = game.waypointCoords.some(([waypoint_x, waypoint_y]) => {
+    const transformAll = game[Get.Transform].filter((t, index) => index !== entity);
+    const dimensionsAll = game[Get.Dimensions].filter((t, index) => index !== entity);
+
+    collisionEffect.active = transformAll.some(({ x, y }, index) => {
+        const { width, height } = dimensionsAll[index];
+
         return (
-            (
-                (transform.x + dimensions.width > waypoint_x && transform.x + dimensions.width < waypoint_x + WAYPOINT_SIZE) ||
-                (transform.x < waypoint_x + WAYPOINT_SIZE && transform.x > waypoint_x)
-            )
-            &&
-            (
-                (transform.y + dimensions.height > waypoint_y && transform.y + dimensions.height < waypoint_y + WAYPOINT_SIZE) ||
-                (transform.y < waypoint_y + WAYPOINT_SIZE && transform.y > waypoint_y)
-            )
+            ((transform.x + dimensions.width > x && transform.x + dimensions.width < x + width) ||
+                (transform.x < x + width && transform.x > x)) &&
+            ((transform.y + dimensions.height > y && transform.y + dimensions.height < y + height) ||
+                (transform.y < y + height && transform.y > y))
         );
     });
 }
