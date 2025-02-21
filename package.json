@@ -1,44 +1,48 @@
 {
-  "name": "szymeocom",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@types/node": "^16.11.38",
-    "gh-pages": "^4.0.0",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-scripts": "5.0.1",
-    "typescript": "^4.7.2"
-  },
-  "homepage": "https://szymeo.github.io/",
-  "devDependencies": {
-    "@types/react": "^17.0.33",
-    "@types/react-dom": "^17.0.10"
-  },
-  "scripts": {
-    "dev": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "predeploy": "yarn build",
-    "deploy": "gh-pages -d build"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  }
+	"name": "szymeo.github.io",
+	"private": true,
+	"version": "0.0.1",
+	"type": "module",
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build",
+		"preview": "vite preview",
+		"prepare": "svelte-kit sync || echo ''",
+		"deploy": "gh-pages -d build -t",
+		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+		"format": "prettier --write .",
+		"lint": "prettier --check . && eslint ."
+	},
+	"devDependencies": {
+		"@csstools/postcss-oklab-function": "^4.0.7",
+		"@eslint/compat": "^1.2.5",
+		"@eslint/js": "^9.18.0",
+		"@faker-js/faker": "^9.4.0",
+		"@sveltejs/adapter-static": "^3.0.8",
+		"@sveltejs/adapter-vercel": "^5.5.2",
+		"@sveltejs/kit": "^2.16.0",
+		"@sveltejs/vite-plugin-svelte": "^5.0.0",
+		"@tailwindcss/vite": "^4.0.0",
+		"daisyui": "5.0.0-beta.8",
+		"eslint": "^9.18.0",
+		"eslint-config-prettier": "^10.0.1",
+		"eslint-plugin-svelte": "^2.46.1",
+		"gh-pages": "^6.3.0",
+		"globals": "^15.14.0",
+		"prettier": "^3.4.2",
+		"prettier-plugin-svelte": "^3.3.3",
+		"prettier-plugin-tailwindcss": "^0.6.11",
+		"svelte": "^5.0.0",
+		"svelte-check": "^4.0.0",
+		"tailwindcss": "^4.0.0",
+		"typescript": "^5.0.0",
+		"typescript-eslint": "^8.20.0",
+		"vite": "^6.0.0"
+	},
+	"pnpm": {
+		"onlyBuiltDependencies": [
+			"esbuild"
+		]
+	}
 }

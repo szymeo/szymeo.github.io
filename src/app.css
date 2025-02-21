@@ -1,0 +1,16 @@
+@import 'tailwindcss';
+@plugin 'daisyui';
+
+html,
+body {
+	--font-sans: 'Atkinson Hyperlegible Mono', monospace;
+
+	--color-primary: var(--color-white);
+	--color-secondary: var(--color-gray-400);
+	--root-bg: var(--color-black);
+	@apply tracking-wide antialiased;
+}
+
+* {
+	@apply outline-gray-600;
+}
