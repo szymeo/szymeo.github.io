@@ -1,0 +1,1 @@
+import{l as u,u as a,b as t,d as c,e as l}from"./CqiluGt2.js";function i(n){t===null&&u(),c&&t.l!==null?s(t).m.push(n):a(()=>{const e=l(n);if(typeof e=="function")return e})}function s(n){var o;var e=n.l;return(o=e.u)!=null?o:e.u={a:[],b:[],m:[]}}export{i as o};

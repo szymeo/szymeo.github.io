@@ -1,0 +1,1 @@
+import{b as m,h as r,a as t,t as i}from"../chunks/j2SRop0X.js";import"../chunks/Bi-srQCo.js";import{$ as p,m as s}from"../chunks/CqiluGt2.js";var c=i('<meta name="description" content="Simon Gracki\'s personal website">');function x(a){s();var e=m("Maybe one day =)");r(o=>{var n=c();p.title="Simon Gracki | blog",t(o,n)}),t(a,e)}export{x as component};
