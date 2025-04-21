@@ -11,7 +11,7 @@
 	<meta name="description" content="Simon Gracki's personal website" />
 </svelte:head>
 
-<div class="space-y-2">
+<div class="max-w-4xl space-y-2">
 	{#each projects_json as project, i}
 		<div in:fly|global={DEFAULT_ANIMATION(i)} class="leading-5">
 			<a
@@ -20,7 +20,7 @@
 				target="_blank"
 				class="text-primary flex w-fit cursor-pointer items-center gap-1 hover:underline"
 			>
-				{project.name} - open
+				{project.name}
 				<ExternalIcon class="h-4 w-4" />
 			</a>
 
@@ -32,11 +32,12 @@
 				class={[
 					'block text-xs leading-5 font-semibold capitalize',
 					{
+						'text-blue-500':
+							project.status === ProjectStatus.ACTIVE,
 						'text-green-500':
-							project.status === ProjectStatus.SUCCESSFUL,
-						'text-purple-500':
 							project.status === ProjectStatus.ONGOING,
-						'text-red-500': project.status === ProjectStatus.FAILED,
+						'text-orange-400':
+							project.status === ProjectStatus.DISCONTINUED,
 					},
 				]}
 			>

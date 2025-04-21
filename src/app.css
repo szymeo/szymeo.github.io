@@ -3,12 +3,118 @@
 
 html,
 body {
-	--font-sans: 'Atkinson Hyperlegible Mono', monospace;
+	--font-sans: 'Kumbh Sans', sans-serif;
 
 	--color-primary: var(--color-white);
 	--color-secondary: var(--color-gray-400);
 	--root-bg: var(--color-black);
 	@apply tracking-wide antialiased;
+}
+
+.markdown {
+	& h1 {
+		@apply mt-8 text-5xl font-semibold;
+	}
+
+	& h2 {
+		@apply mt-6 text-4xl font-semibold;
+	}
+
+	& h3 {
+		@apply mt-4 text-3xl font-semibold;
+	}
+
+	& h4 {
+		@apply mt-3 text-2xl font-semibold;
+	}
+
+	& h5 {
+		@apply mt-2 text-xl font-semibold;
+	}
+
+	& h6 {
+		@apply mt-1 text-lg font-semibold;
+	}
+
+	& p {
+		@apply mt-4 text-base;
+	}
+
+	& ul {
+		@apply mt-4 list-disc pl-4;
+	}
+
+	& ol {
+		@apply mt-4 list-decimal pl-4;
+	}
+
+	& blockquote {
+		@apply border-primary mt-4 border-l-4 pl-3 italic;
+	}
+
+	& pre {
+		@apply bg-primary/10 border-primary/80 mt-4 rounded-lg border p-4 text-white;
+	}
+
+	& code {
+		@apply rounded bg-transparent px-1 py-0.5 whitespace-pre-wrap text-white;
+	}
+
+	& a {
+		@apply text-primary underline;
+	}
+
+	& img {
+		@apply mt-4 rounded-lg;
+	}
+
+	& hr {
+		@apply border-primary mt-4 border-t-2;
+	}
+
+	& table {
+		@apply mt-4 w-full;
+	}
+
+	& th {
+		@apply bg-primary text-primary-content p-2 font-semibold;
+
+		&:first-child {
+			@apply rounded-tl;
+		}
+
+		&:last-child {
+			@apply rounded-tr;
+		}
+	}
+
+	& td {
+		@apply border-primary border p-2;
+	}
+
+	& tr:nth-child(even) {
+		@apply bg-primary/5;
+	}
+
+	& tr:nth-child(odd) {
+		@apply bg-primary/10;
+	}
+
+	& tr:hover {
+		@apply bg-primary/20;
+	}
+
+	& input[type='checkbox'] {
+		@apply checked:bg-primary relative h-5 w-5 appearance-none rounded-md border border-gray-300 align-sub checked:border-transparent;
+
+		&:checked:after {
+			@apply bg-primary-content absolute top-1/2 left-1/2 block h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 transform rounded content-[''];
+		}
+
+		&:not(:checked) {
+			@apply border-primary/70;
+		}
+	}
 }
 
 * {
