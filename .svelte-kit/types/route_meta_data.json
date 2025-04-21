@@ -1,0 +1,18 @@
+{
+	"/": [
+		"src/routes/+layout.ts",
+		"src/routes/+layout.ts"
+	],
+	"/about_me": [
+		"src/routes/+layout.ts"
+	],
+	"/blog": [
+		"src/routes/+layout.ts"
+	],
+	"/movies": [
+		"src/routes/+layout.ts"
+	],
+	"/projects": [
+		"src/routes/+layout.ts"
+	]
+}

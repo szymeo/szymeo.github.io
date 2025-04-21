@@ -1,0 +1,1 @@
+import{S as c,Q as t,Z as u,U as l}from"./c5M_NGkN.js";function a(n){throw new Error("https://svelte.dev/e/lifecycle_outside_component")}function s(n){t===null&&a(),u&&t.l!==null?i(t).m.push(n):c(()=>{const e=l(n);if(typeof e=="function")return e})}function i(n){var o;var e=n.l;return(o=e.u)!=null?o:e.u={a:[],b:[],m:[]}}export{s as o};
