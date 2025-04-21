@@ -46,7 +46,7 @@ Currently reading: "The Lean Startup" by Eric Ries and "Continuous Discovery Hab
 
 I'm always open to discussing new projects, technical challenges, or innovative ideas. Whether you're looking for a technical consultant, a team leader, or a collaborator on your next big project, let's talk about how we can create something amazing together.
 
-[Contact Me](https://linkedin.com/in/sgracki) | [View My Projects](/projects)`;
+[Contact Me](https://linkedin.com/in/sgracki)`;
 </script>
 
 <svelte:head>
